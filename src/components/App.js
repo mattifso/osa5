@@ -1,7 +1,8 @@
 import React from 'react'
-import Blog from './components/Blog'
-import blogService from './services/blogs'
-import loginService from './services/login'
+import Blog from './Blog'
+import blogService from '../services/blogs'
+import loginService from '../services/login'
+import AddBlogForm from './AddBlogForm'
 
 class App extends React.Component {
   constructor(props) {
@@ -46,7 +47,7 @@ class App extends React.Component {
       this.setState({ username: '', password: '', userData: user, user: user.token }) // koska tehtävänannossa käskettiin laittaa token useriin
     } catch (exception) {
       this.setState({
-        error: 'käyttäjätunnus tai salasana virheellinen',
+        error: 'invalid username or password',
       })
       setTimeout(() => {
         this.setState({ error: null })
@@ -59,13 +60,17 @@ class App extends React.Component {
     this.setState({ userData: null, user: null })
   }
 
+  addToBlogList = (newBlog) => {
+    this.setState({ blogs: this.state.blogs.concat(newBlog) })
+  }
+
   render() {
     const loginForm = () => (
       <div>
-        <h2>Kirjaudu sovellukseen</h2>
+        <h2>Log in to application</h2>
         <form onSubmit={this.login}>
           <div>
-            käyttäjätunnus
+            username
             <input
               name="username"
               type="text"
@@ -74,7 +79,7 @@ class App extends React.Component {
             />
           </div>
           <div>
-            salasana
+            password
             <input
               name="password"
               type="password"
@@ -93,6 +98,7 @@ class App extends React.Component {
         <p>
           {this.state.userData.name} logged in <button onClick={this.logoutHandler}>logout</button>
         </p>
+        <AddBlogForm addToBlogList={this.addToBlogList} />
 
         {this.state.blogs.map(blog => (
           <Blog key={blog._id} blog={blog} />
