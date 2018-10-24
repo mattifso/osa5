@@ -3,6 +3,7 @@ import Blog from './Blog'
 import blogService from '../services/blogs'
 import loginService from '../services/login'
 import AddBlogForm from './AddBlogForm'
+import LoginForm from './LoginForm'
 
 class App extends React.Component {
   constructor(props) {
@@ -65,32 +66,27 @@ class App extends React.Component {
   }
 
   render() {
-    const loginForm = () => (
-      <div>
-        <h2>Log in to application</h2>
-        <form onSubmit={this.login}>
-          <div>
-            username
-            <input
-              name="username"
-              type="text"
-              value={this.state.username}
-              onChange={this.handleLoginFieldChange}
-            />
+    const loginForm = () => {
+      const hideWhenVisible = { display: this.state.loginVisible ? 'none' : '' }
+      const showWhenVisible = { display: this.state.loginVisible ? '' : 'none' }
+
+      return (
+        <div>
+          <div style={hideWhenVisible}>
+            <button onClick={e => this.setState({ loginVisible: true })}>log in</button>
           </div>
-          <div>
-            password
-            <input
-              name="password"
-              type="password"
-              value={this.state.password}
-              onChange={this.handleLoginFieldChange}
+          <div style={showWhenVisible}>
+            <LoginForm
+              username={this.state.username}
+              password={this.state.password}
+              handleChange={this.handleLoginFieldChange}
+              handleSubmit={this.login}
             />
+            <button onClick={e => this.setState({ loginVisible: false })}>cancel</button>
           </div>
-          <button type="submit">kirjaudu</button>
-        </form>
-      </div>
-    )
+        </div>
+      )
+    }
 
     const blogForm = () => (
       <div>
