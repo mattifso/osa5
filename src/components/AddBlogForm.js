@@ -1,5 +1,6 @@
 import React from 'react'
 import blogService from '../services/blogs'
+import PropTypes from 'prop-types'
 
 class AddBlogForm extends React.Component {
   constructor(props) {
@@ -14,17 +15,17 @@ class AddBlogForm extends React.Component {
 
   createBlogEntry = () => {
     return async (event) => {
-    event.preventDefault()
-    const result = await blogService.create({
-      title: this.state.title,
-      author: this.state.author,
-      url: this.state.url
-    })
-    console.log('created with result ', result)
-    this.state.addToBlogList(result)
-    return result
+      event.preventDefault()
+      const result = await blogService.create({
+        title: this.state.title,
+        author: this.state.author,
+        url: this.state.url
+      })
+      console.log('created with result ', result)
+      this.state.addToBlogList(result)
+      return result
+    }
   }
-}
 
   handleAddBlogFieldChange = (event) => {
     this.setState({ [event.target.name]: event.target.value })
@@ -67,6 +68,8 @@ class AddBlogForm extends React.Component {
   }
 }
 
-
+AddBlogForm.propTypes = {
+  addToBlogList: PropTypes.func.isRequired
+}
 
 export default AddBlogForm
