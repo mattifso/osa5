@@ -3,6 +3,10 @@ import blogService from '../services/blogs'
 import PropTypes from 'prop-types'
 
 class AddBlogForm extends React.Component {
+  static propTypes = {
+    addToBlogList: PropTypes.func.isRequired
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -66,10 +70,6 @@ class AddBlogForm extends React.Component {
       </form>
     </div>)
   }
-}
-
-AddBlogForm.propTypes = {
-  addToBlogList: PropTypes.func.isRequired
 }
 
 export default AddBlogForm
