@@ -1,9 +1,14 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import reducter from './reducer'
+import { createStore } from 'redux'
+import reducer from './reducer'
+
+const store = createStore(reducer)
 
 const Statistiikka = () => {
-  const palautteita = 0
+  const stateNow = store.getState();
+  const palautteita = Object.entries(stateNow).reduce((total, keyVal) => (total + keyVal[1]), 0)
+  const nollaa = () => { store.dispatch({ type: 'ZERO' }) }
 
   if (palautteita === 0) {
     return (
@@ -21,35 +26,35 @@ const Statistiikka = () => {
         <tbody>
           <tr>
             <td>hyvä</td>
-            <td></td>
+            <td>{stateNow.good}</td>
           </tr>
           <tr>
             <td>neutraali</td>
-            <td></td>
+            <td>{stateNow.ok}</td>
           </tr>
           <tr>
             <td>huono</td>
-            <td></td>
+            <td>{stateNow.bad}</td>
           </tr>
           <tr>
             <td>keskiarvo</td>
-            <td></td>
+            <td>{(stateNow.good - stateNow.bad) / (stateNow.good + stateNow.ok + stateNow.bad)}</td>
           </tr>
           <tr>
             <td>positiivisia</td>
-            <td></td>
+            <td>{100 * ((stateNow.good) / (stateNow.good + stateNow.ok + stateNow.bad))}%</td>
           </tr>
         </tbody>
       </table>
 
-      <button>nollaa tilasto</button>
+      <button onClick={nollaa}>nollaa tilasto</button>
     </div >
   )
 }
 
 class App extends React.Component {
   klik = (nappi) => () => {
-    
+    store.dispatch({ type: nappi })
   }
 
   render() {
@@ -65,4 +70,9 @@ class App extends React.Component {
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const renderApp = () => {
+  ReactDOM.render(<App />, document.getElementById('root'))
+}
+
+renderApp()
+store.subscribe(renderApp)
