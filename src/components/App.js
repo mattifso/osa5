@@ -4,6 +4,7 @@ import blogService from '../services/blogs'
 import loginService from '../services/login'
 import AddBlogForm from './AddBlogForm'
 import LoginForm from './LoginForm'
+import Notification from './Notification'
 
 class App extends React.Component {
   constructor(props) {
@@ -13,7 +14,8 @@ class App extends React.Component {
       username: '',
       password: '',
       userData: null,
-      user: null
+      user: null,
+      notification: null
     }
   }
 
@@ -47,22 +49,28 @@ class App extends React.Component {
       blogService.setToken(user.token)
       this.setState({ username: '', password: '', userData: user, user: user.token }) // koska tehtävänannossa käskettiin laittaa token useriin
     } catch (exception) {
-      this.setState({
-        error: 'invalid username or password',
-      })
-      setTimeout(() => {
-        this.setState({ error: null })
-      }, 5000)
+      this.setNotification(true, 'invalid username or password')
     }
   }
 
   logoutHandler = () => {
     window.localStorage.removeItem('loggedBlogappUser')
     this.setState({ userData: null, user: null })
+    this.setNotification(false, 'Logged out')
   }
 
   addToBlogList = (newBlog) => {
-    this.setState({ blogs: this.state.blogs.concat(newBlog) })
+    this.setState((prevState) => {
+      return { blogs: prevState.blogs.concat(newBlog) }
+    })
+    this.setNotification(false, `Added blog ${newBlog.title}`)
+  }
+
+  setNotification = (isError, msg) => {
+    this.setState((prevState) => ({ notification: { isError: isError, msg: msg } }))
+    setTimeout(() => {
+      this.setState({ notification: null })
+    }, 5000)
   }
 
   render() {
@@ -102,7 +110,13 @@ class App extends React.Component {
       </div>
     )
 
-    return this.state.user ? blogForm() : loginForm()
+    return (
+      <div>
+        <Notification notification={this.state.notification} />
+        {this.state.user && blogForm()}
+        {!this.state.user && loginForm()}
+      </div>
+    )
   }
 }
 
