@@ -19,12 +19,14 @@ class App extends React.Component {
       this.setState({ newAnecdote: event.target.value })
     }
     const createAnecdote = (event) => {
+      event.preventDefault()
       this.props.store.dispatch({ type: 'CREATE', content: this.state.newAnecdote })
     }
     return (
       <div>
         <h2>Anecdotes</h2>
-        {anecdotes.map(anecdote =>
+        {anecdotes.sort((a,b) => (b.votes - a.votes))
+        .map(anecdote =>
           <div key={anecdote.id}>
             <div>
               {anecdote.content}
