@@ -104,9 +104,11 @@ class App extends React.Component {
         </p>
         <AddBlogForm addToBlogList={this.addToBlogList} />
 
-        {this.state.blogs.map(blog => (
-          <Blog key={blog._id} blog={blog} />
-        ))}
+        {this.state.blogs
+          .sort((a, b) => (b.likes - a.likes))
+          .map(blog => (
+            <Blog key={blog._id} blog={blog} />
+          ))}
       </div>
     )
 
