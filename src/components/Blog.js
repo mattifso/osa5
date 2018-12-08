@@ -14,7 +14,8 @@ class Blog extends React.Component {
     super(props)
     this.state = {
       detailsVisible: false,
-      blog: props.blog
+      blog: props.blog,
+      userId: props.userId
     }
   }
 
@@ -39,6 +40,7 @@ class Blog extends React.Component {
 
   render() {
     const showWhenVisible = { display: this.state.detailsVisible ? '' : 'none' }
+    const showWhenMatchingUser = { display: this.state.blog.user._id === this.state.userId ? '' : 'none' }
     return (
       <div style={blogStyle} >
         <div onClick={this.toggleDetails}>
@@ -46,18 +48,18 @@ class Blog extends React.Component {
         </div>
 
         <div style={showWhenVisible}>
-          <p>
+          <div>
             <a href={this.state.blog.url}>{this.state.blog.url}</a>
-          </p>
-          <p>
+          </div>
+          <div>
             {this.state.blog.likes} likes <button onClick={this.addLike}>like</button>
-          </p>
-          <p>
+          </div>
+          <div>
             added by {this.state.blog.user.username}
-          </p>
-          <p>
+          </div>
+          <div style={showWhenMatchingUser}>
             <button onClick={this.delete}>delete</button>
-          </p>
+          </div>
         </div>
       </div>
     )

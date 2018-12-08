@@ -107,7 +107,7 @@ class App extends React.Component {
         {this.state.blogs
           .sort((a, b) => (b.likes - a.likes))
           .map(blog => (
-            <Blog key={blog._id} blog={blog} />
+            <Blog key={blog._id} blog={blog} userId={this.state.userData.id}/>
           ))}
       </div>
     )
