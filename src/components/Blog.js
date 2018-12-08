@@ -43,11 +43,11 @@ class Blog extends React.Component {
     const showWhenMatchingUser = { display: this.state.blog.user._id === this.state.userId ? '' : 'none' }
     return (
       <div style={blogStyle} >
-        <div onClick={this.toggleDetails}>
+        <div className="titleAndAuthor" onClick={this.toggleDetails}>
           {this.state.blog.title} {this.state.blog.author}
         </div>
-
-        <div style={showWhenVisible}>
+0
+        <div className="details" style={showWhenVisible}>
           <div>
             <a href={this.state.blog.url}>{this.state.blog.url}</a>
           </div>
