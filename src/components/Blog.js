@@ -28,7 +28,13 @@ class Blog extends React.Component {
       likes: this.state.blog.likes ? this.state.blog.likes + 1 : 1
     }
     this.setState({ blog: updatedBlog })
-    const result = await blogService.update(updatedBlog)
+    await blogService.update(updatedBlog)
+  }
+
+  delete = async () => {
+    if (window.confirm(`delete '${this.state.blog.title}'?`)) {
+      await blogService.deleteBlog(this.state.blog)
+    }
   }
 
   render() {
@@ -48,6 +54,9 @@ class Blog extends React.Component {
           </p>
           <p>
             added by {this.state.blog.user.username}
+          </p>
+          <p>
+            <button onClick={this.delete}>delete</button>
           </p>
         </div>
       </div>

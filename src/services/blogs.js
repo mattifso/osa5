@@ -34,9 +34,21 @@ const update = async (updatedObject) => {
   }
 }
 
+const deleteBlog = async (objectToDelete) => {
+  const config = {
+    headers: { 'Authorization': token }
+  }
+
+  try {
+    const response = await axios.delete(baseUrl + `/${objectToDelete._id}`, config)
+    return response.data
+  } catch (error) {
+    console.log('error occurred', error)
+  }
+}
 
 const setToken = (newToken) => {
   token = `Bearer ${newToken}`
 }
 
-export default { getAll, setToken, create, update }
+export default { getAll, setToken, create, update, deleteBlog }
