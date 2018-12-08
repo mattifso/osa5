@@ -21,9 +21,22 @@ const create = async (newObject) => {
   }
 }
 
+const update = async (updatedObject) => {
+  const config = {
+    headers: { 'Authorization': token }
+  }
+
+  try {
+    const response = await axios.put(baseUrl + `/${updatedObject._id}`, updatedObject, config)
+    return response.data
+  } catch (error) {
+    console.log('error occurred', error)
+  }
+}
+
 
 const setToken = (newToken) => {
   token = `Bearer ${newToken}`
 }
 
-export default { getAll, setToken, create }
+export default { getAll, setToken, create, update }
